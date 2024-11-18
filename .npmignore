@@ -1,0 +1,10 @@
+/*.tgz
+/src
+/test
+/coverage
+/data
+/Makefile
+/CHANGELOG.md
+/tsconfig*
+/tsup*
+/jest*

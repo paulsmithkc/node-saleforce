@@ -1,0 +1,80 @@
+import type { OAuthProvider } from "./oauth";
+import type { ILogger } from "./logger";
+import { SOBJECT_API_PATH } from "./constants";
+import { SObject, SResult, SOptions } from "./models";
+import axios from "axios";
+
+/**
+ * Inserts new records into Salesforce.
+ *
+ * @param logger logger
+ * @param authProvider auth provider
+ * @param records record(s) to be inserted
+ * @param options options
+ * @returns insert results
+ * @see https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_composite_sobjects_collections_create.htm
+ */
+export async function insert<T extends SObject>(
+  logger: ILogger | undefined,
+  authProvider: OAuthProvider,
+  records: T | T[],
+  options?: SOptions,
+  abortSignal?: AbortSignal,
+): Promise<SResult[]> {
+  const method = "salesforce.insert";
+  const authToken = authProvider.accessToken;
+  const url = `${authProvider.url}${SOBJECT_API_PATH}`;
+  const metadata = { url, records, options };
+
+  try {
+    logger?.info?.(method, "start", metadata);
+
+    const recordsEx: T[] = Array.isArray(records) ? records : [records];
+
+    const overrideType = options?.type;
+    for (const r of recordsEx) {
+      // type
+      if (overrideType) {
+        r.attributes = { type: overrideType };
+      } else if (!r.attributes?.type) {
+        throw new Error("sobject type missing");
+      }
+      // id
+      const id = r.Id || r.id;
+      if (id) {
+        throw new Error("sobject id not allowed");
+      }
+    }
+
+    const res = await axios<SResult[]>({
+      method: "post",
+      url: url,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        Accept: "application/json",
+      },
+      data: {
+        allOrNone: options?.allOrNone,
+        records: recordsEx,
+      },
+      proxy: false,
+      signal: abortSignal,
+    });
+
+    /* istanbul ignore next */
+    logger?.info?.(method, "done", {
+      ...metadata,
+      resStatus: res?.status,
+      resData: res?.data,
+    });
+    return res.data;
+  } catch (err) {
+    /* istanbul ignore next */
+    logger?.error?.(method, err, {
+      ...metadata,
+      resStatus: err?.response?.status,
+      resData: err?.response?.data,
+    });
+    throw err;
+  }
+}
