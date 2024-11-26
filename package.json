@@ -1,6 +1,12 @@
 {
   "name": "@merlin4/salesforce",
   "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paulsmithkc/node-salesforce.git"
+  },
+  "author": "Paul Smith",
   "files": [
     "lib/**/*"
   ],
