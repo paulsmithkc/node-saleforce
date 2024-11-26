@@ -8,7 +8,7 @@ import {
   mockAuthProvider,
   mockLogger,
   customType,
-} from "./constants.test";
+} from "./_testUtils.test";
 
 const recordId1 = "ABC";
 const recordId2 = "EFG";

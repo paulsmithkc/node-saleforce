@@ -1,7 +1,11 @@
 import type { ILogger } from "./logger";
 import { getAuthorization } from "./oauth";
 import * as nock from "nock";
-import { OAUTH_API_PATH, authProviderUrl } from "./constants.test";
+import {
+  SALESFORCE_API_VERSION,
+  OAUTH_API_PATH,
+  authProviderUrl,
+} from "./_testUtils.test";
 
 const clientUrl = authProviderUrl;
 const clientId = "CLIENT_ID";
@@ -66,6 +70,7 @@ describe("REST API: oauth", () => {
       url: authProviderUrl,
       accessToken: accessToken,
       tokenType: "Bearer",
+      apiVersion: SALESFORCE_API_VERSION,
     });
     expect(logger.error).toHaveBeenCalledTimes(0);
   }, 15_000);

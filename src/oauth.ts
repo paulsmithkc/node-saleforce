@@ -1,11 +1,11 @@
 import type { ILogger } from "./logger";
-import { OAUTH_API_PATH } from "./constants";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 export interface OAuthProvider {
   url: string;
   accessToken: string;
   tokenType: string;
+  apiVersion: string;
 }
 
 type OAuthResult = {
@@ -13,6 +13,9 @@ type OAuthResult = {
   token_type: string;
   instance_url: string;
 };
+
+export const SALESFORCE_API_VERSION = "v57.0";
+export const OAUTH_API_PATH = "/services/oauth2/token";
 
 export async function getAuthorization(
   log: ILogger,
@@ -24,6 +27,7 @@ export async function getAuthorization(
     password: string;
     token: string;
   },
+  apiVersion: string = SALESFORCE_API_VERSION,
 ): Promise<OAuthProvider> {
   const method = "salesforce.getAuthorization";
 
@@ -52,6 +56,7 @@ export async function getAuthorization(
       url: responseData.instance_url,
       accessToken: responseData.access_token,
       tokenType: responseData.token_type,
+      apiVersion,
     };
   } catch (err) {
     /* istanbul ignore next */

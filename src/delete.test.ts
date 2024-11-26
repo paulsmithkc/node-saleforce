@@ -1,15 +1,14 @@
 import type { ILogger } from "./logger";
 import type { OAuthProvider } from "./oauth";
+import type { SResult } from "./models";
 import { deleteRecords } from "./delete";
 import * as nock from "nock";
-
 import {
   SOBJECT_API_PATH,
   authProviderUrl,
   mockAuthProvider,
   mockLogger,
-} from "./constants.test";
-import { SResult } from "./models";
+} from "./_testUtils.test";
 
 describe("REST API: delete", () => {
   let logger: ILogger;

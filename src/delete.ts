@@ -1,6 +1,5 @@
 import type { OAuthProvider } from "./oauth";
 import type { ILogger } from "./logger";
-import { SOBJECT_API_PATH } from "./constants";
 import { SOptions, SResult } from "./models";
 import axios from "axios";
 
@@ -34,7 +33,7 @@ export async function deleteRecords(
   }
 
   const idString = idsToDelete.join(",");
-  const url = `${baseUrl}${SOBJECT_API_PATH}?ids=${encodeURIComponent(
+  const url = `${baseUrl}/services/data/${authProvider.apiVersion}/composite/sobjects?ids=${encodeURIComponent(
     idString,
   )}&allOrNone=${allOrNone}`;
 

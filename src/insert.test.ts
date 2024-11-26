@@ -8,7 +8,7 @@ import {
   mockAuthProvider,
   mockLogger,
   customType,
-} from "./constants.test";
+} from "./_testUtils.test";
 
 describe("REST API: insert", () => {
   let logger: ILogger;

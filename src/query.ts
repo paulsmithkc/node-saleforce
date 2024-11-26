@@ -1,6 +1,5 @@
 import type { OAuthProvider } from "./oauth";
 import type { ILogger } from "./logger";
-import { QUERY_API_PATH } from "./constants";
 import axios from "axios";
 
 type QueryResult<T> = {
@@ -47,7 +46,7 @@ export async function* query<T>(
   const { allowPartial, abortSignal } = options || {};
 
   const trimmedSoql = trimSoqlQuery(soql);
-  let url = `${baseUrl}${QUERY_API_PATH}?q=${encodeURIComponent(trimmedSoql)}`;
+  let url = `${baseUrl}/services/data/${authProvider.apiVersion}/query?q=${encodeURIComponent(trimmedSoql)}`;
   let done = false;
 
   try {

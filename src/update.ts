@@ -1,6 +1,5 @@
 import type { OAuthProvider } from "./oauth";
 import type { ILogger } from "./logger";
-import { SOBJECT_API_PATH } from "./constants";
 import { SObject, SResult, SOptions } from "./models";
 import axios from "axios";
 
@@ -23,7 +22,7 @@ export async function update<T extends SObject>(
 ): Promise<SResult[]> {
   const method = "salesforce.update";
   const authToken = authProvider.accessToken;
-  const url = `${authProvider.url}${SOBJECT_API_PATH}`;
+  const url = `${authProvider.url}/services/data/${authProvider.apiVersion}/composite/sobjects`;
   const metadata = { url, records, options };
 
   try {

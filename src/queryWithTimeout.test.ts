@@ -9,7 +9,7 @@ import {
   authProviderUrl,
   mockAuthProvider,
   mockLogger,
-} from "./constants.test";
+} from "./_testUtils.test";
 
 const recordType = "CustomType__c";
 
